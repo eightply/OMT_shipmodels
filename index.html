@@ -10,22 +10,76 @@
       <!-- Camera for AR -->
       <a-camera position="0 1.6 0" look-controls="pointerLockEnabled: false"></a-camera>
 
-      <!-- Ship Model (Duck) -->
-      <a-entity id="ship"
-        gltf-model="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf"
-        scale="0.5 0.5 0.5"
-        position="0 0 0">
+      <!-- Surface Detection and Grid Visualization -->
+      <a-entity id="surface" arjs-anchor="type: surface;" position="0 0 0">
+        
+        <!-- Grid Visualization -->
+        <a-plane id="grid" 
+          position="0 0 0" 
+          rotation="-90 0 0" 
+          width="2" 
+          height="2" 
+          color="cyan" 
+          opacity="0.5" 
+          visible="false"
+          grid="size: 0.2; color: white;">
+        </a-plane>
+
+        <!-- Placeholder Ship Model (Duck) -->
+        <a-entity id="ship-placeholder" 
+          gltf-model="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf" 
+          scale="0.5 0.5 0.5" 
+          position="0 0 0" 
+          visible="false">
+        </a-entity>
+
       </a-entity>
 
-      <!-- AR Surface Marker for Table -->
-      <a-entity id="surface" arjs-anchor="type: surface;">
-        <a-entity id="ship-on-surface"
-          gltf-model="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf"
-          scale="0.5 0.5 0.5"
-          position="0 0 0">
-        </a-entity>
+      <!-- Ship Model that will be placed -->
+      <a-entity id="ship" 
+        gltf-model="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf" 
+        scale="0.5 0.5 0.5" 
+        visible="false">
       </a-entity>
 
     </a-scene>
+
+    <script>
+      let surface = document.getElementById("surface");
+      let grid = document.getElementById("grid");
+      let shipPlaceholder = document.getElementById("ship-placeholder");
+      let ship = document.getElementById("ship");
+
+      // Surface detection callback
+      surface.addEventListener('loaded', function() {
+        grid.setAttribute('visible', true); // Show grid when surface is detected
+      });
+
+      // Listen for a tap (click) to place the ship
+      window.addEventListener('click', function(event) {
+        // Only place the ship if grid is visible (surface detected)
+        if (grid.getAttribute('visible')) {
+          // Place the ship at the placeholder's position
+          ship.setAttribute('position', shipPlaceholder.getAttribute('position'));
+          ship.setAttribute('visible', true);  // Make ship visible when placed
+
+          // Optionally, hide the placeholder after placing
+          shipPlaceholder.setAttribute('visible', false);
+        }
+      });
+
+      // Detect the position of the tap to move the ship placeholder
+      document.querySelector('a-scene').addEventListener('arjs-track', function(event) {
+        if (grid.getAttribute('visible')) {
+          let intersected = event.detail.intersectedEl;
+          if (intersected && intersected === grid) {
+            let intersectionPoint = event.detail.point; // Get the intersection point
+            shipPlaceholder.setAttribute('position', intersectionPoint); // Move placeholder to intersection point
+            shipPlaceholder.setAttribute('visible', true); // Show placeholder while it's moving
+          }
+        }
+      });
+    </script>
+
   </body>
 </html>
