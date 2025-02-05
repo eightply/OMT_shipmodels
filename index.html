@@ -19,26 +19,42 @@
 
       <!-- UI Buttons -->
       <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px;">
-        <button onclick="changeModel(0)" style="padding: 10px;">Ship 1</button>
-        <button onclick="changeModel(1)" style="padding: 10px;">Ship 2</button>
-        <button onclick="changeModel(2)" style="padding: 10px;">Ship 3</button>
+        <button id="ship1Btn" style="padding: 10px;">Ship 1</button>
+        <button id="ship2Btn" style="padding: 10px;">Ship 2</button>
+        <button id="ship3Btn" style="padding: 10px;">Ship 3</button>
       </div>
 
     </a-scene>
 
     <script>
-      let ship = document.getElementById("ship");
+      document.addEventListener('DOMContentLoaded', function() {
+        let ship = document.getElementById("ship");
 
-      // List of different ship models
-      let shipModels = [
-        "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf",  // Placeholder model 1
-        "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Avocado/glTF/Avocado.gltf", // Placeholder model 2
-        "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/DamagedHelmet/glTF/DamagedHelmet.gltf" // Placeholder model 3
-      ];
+        // List of different ship models
+        let shipModels = [
+          "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf",  // Placeholder model 1
+          "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Avocado/glTF/Avocado.gltf", // Placeholder model 2
+          "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/DamagedHelmet/glTF/DamagedHelmet.gltf" // Placeholder model 3
+        ];
 
-      function changeModel(index) {
-        ship.setAttribute("gltf-model", shipModels[index]);
-      }
+        // Change model based on button click
+        function changeModel(index) {
+          ship.setAttribute("gltf-model", shipModels[index]);
+        }
+
+        // Attach event listeners to the buttons
+        document.getElementById("ship1Btn").addEventListener("click", function() {
+          changeModel(0);
+        });
+
+        document.getElementById("ship2Btn").addEventListener("click", function() {
+          changeModel(1);
+        });
+
+        document.getElementById("ship3Btn").addEventListener("click", function() {
+          changeModel(2);
+        });
+      });
     </script>
 
   </body>
