@@ -6,56 +6,26 @@
   </head>
   <body style="margin: 0; overflow: hidden;">
     <a-scene embedded arjs vr-mode-ui="enabled: false">
-      
-      <!-- Ship Model (Default) -->
-      <a-entity id="ship" 
-        gltf-model="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf" 
-        position="0 0 -2"
+
+      <!-- Camera for AR -->
+      <a-camera position="0 1.6 0" look-controls="pointerLockEnabled: false"></a-camera>
+
+      <!-- Ship Model (Duck) -->
+      <a-entity id="ship"
+        gltf-model="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf"
         scale="0.5 0.5 0.5"
-        rotation="0 180 0">
+        position="0 0 0">
       </a-entity>
 
-      <a-camera position="0 1.6 0"></a-camera>
-
-      <!-- UI Buttons -->
-      <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px;">
-        <button id="ship1Btn" style="padding: 10px;">Ship 1</button>
-        <button id="ship2Btn" style="padding: 10px;">Ship 2</button>
-        <button id="ship3Btn" style="padding: 10px;">Ship 3</button>
-      </div>
+      <!-- AR Surface Marker for Table -->
+      <a-entity id="surface" arjs-anchor="type: surface;">
+        <a-entity id="ship-on-surface"
+          gltf-model="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf"
+          scale="0.5 0.5 0.5"
+          position="0 0 0">
+        </a-entity>
+      </a-entity>
 
     </a-scene>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        let ship = document.getElementById("ship");
-
-        // List of different ship models
-        let shipModels = [
-          "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf",  // Placeholder model 1
-          "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Avocado/glTF/Avocado.gltf", // Placeholder model 2
-          "https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/DamagedHelmet/glTF/DamagedHelmet.gltf" // Placeholder model 3
-        ];
-
-        // Change model based on button click
-        function changeModel(index) {
-          ship.setAttribute("gltf-model", shipModels[index]);
-        }
-
-        // Attach event listeners to the buttons
-        document.getElementById("ship1Btn").addEventListener("click", function() {
-          changeModel(0);
-        });
-
-        document.getElementById("ship2Btn").addEventListener("click", function() {
-          changeModel(1);
-        });
-
-        document.getElementById("ship3Btn").addEventListener("click", function() {
-          changeModel(2);
-        });
-      });
-    </script>
-
   </body>
 </html>
